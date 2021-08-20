@@ -150,7 +150,16 @@ void MTPlayer_Play(uint16_t *buf, int bufsize, int audiofreq) {
 							break;
 
 						case 6:
-							row = 0x3F;
+							if(channel[ch].parm1 && channel[ch].parm1 < 0x40) {
+								row = channel[ch].parm1 - 1;
+								order++;
+
+								if(++order >= orders) order = 0;
+
+								rowdata = data + (ordertable[order] * 64 + row) * channels;
+							} else {
+								row = 0x3F;
+							}
 							break;
 
 						case 7:
