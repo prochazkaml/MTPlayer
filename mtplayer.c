@@ -10,8 +10,8 @@
 
 uint16_t *data, *rowdata;
 
-uint8_t patterns, channels, orders, ordertable[256];
-int row = 0x3F, order = -1, tempo, tempotick = 1, audiospeed, audiotick = 1;
+uint8_t patterns, channels, ordertable[256];
+int row = 0x3F, order = -1, orders, tempo, tempotick = 1, audiospeed, audiotick = 1;
 
 typedef struct {
 	int16_t interval, freq, portafreq;
