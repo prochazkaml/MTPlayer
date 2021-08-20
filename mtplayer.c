@@ -14,11 +14,11 @@ uint8_t patterns, channels, orders, ordertable[256];
 int row = 0x3F, order = -1, tempo, tempotick = 1, audiospeed, audiotick = 1;
 
 typedef struct {
-	int16_t interval, freq;
+	int16_t interval, freq, portafreq;
 	uint8_t enabled, active;
 
 	uint8_t note, effect, parm1, parm2;
-	uint8_t lastnote, effectraw, portafreq, portadelta;
+	uint8_t lastnote, effectraw, portadelta;
 	uint8_t vibspeed, vibdepth, vibindex;
 
 	int ctr;
