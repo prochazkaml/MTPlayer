@@ -2,7 +2,7 @@
 A MONOTONE-compatible player library written in C.
 
 ## What is MONOTONE?
-MONOTONE is a tracker (song editor), kind of like [OpenMPT](https://openmpt.org/).
+MONOTONE is a tracker (song editor), similar to programs like [OpenMPT](https://openmpt.org/).
 However, unlike OpenMPT, which is sample/FM-based, MONOTONE is aimed for much simpler audio devices,
 it only supports one kind of instrument (a square wave) at a constant volume.
 Its music file format (.MON files) is usually only a couple of kB in size.
