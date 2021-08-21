@@ -7,6 +7,6 @@ However, unlike OpenMPT, which is sample/FM-based, MONOTONE is aimed for much si
 it only supports one kind of instrument (a square wave) at a constant volume.
 Its music file format (.MON files) is usually only a couple of kB in size.
 
-This library is mostly just a translation of the original MONOTONE tracker source code (in Pascal) to C. It includes a simple example program, which loads and plays a .MON file using PortAudio.
+This library is mostly just a translation of the original MONOTONE tracker source code from Pascal to C. It includes a simple example program, which loads and plays a .MON file using PortAudio.
 
 For more info about MONOTONE & example .MON files, please visit the [MONOTONE GitHub repo](https://github.com/MobyGamer/MONOTONE).
