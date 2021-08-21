@@ -16,11 +16,12 @@ short VibTable[vibtablesize];
 int MTPlayer_Init(uint8_t *filedata) {
 	int i, ch;
 	
-	s.patterns = filedata[0x5C];
-
-	if((s.channels = filedata[0x5D]) > maxchannels) {
+	if(filedata[0x5D] > maxchannels || memcmp(filedata + 1, "MONOTONE", 8)) {
 		return 0;
 	}
+
+	s.patterns = filedata[0x5C];
+	s.channels = filedata[0x5D];
 
 	for(s.orders = 0; s.orders < 256; s.orders++) {
 		if(filedata[0x5F + s.orders] == 0xFF) break;
