@@ -7,6 +7,16 @@
 
 #define AUDIOFREQ 44100
 
+#define USEFLOAT
+
+#ifdef USEFLOAT
+#define AUDIOFORMAT paFloat32
+#define audio_t float
+#else
+#define AUDIOFORMAT paInt16
+#define audio_t int16_t
+#endif
+
 int main(int argc, char *argv[]) {
 	if(argc != 2) {
 		printf("Usage: %s inputfile\n", argv[0]);
@@ -30,14 +40,19 @@ int main(int argc, char *argv[]) {
 	}
 
 	PaStream *stream;
-	short buf[1024];
+	audio_t buf[1024];
 
 	Pa_Initialize();
-	Pa_OpenDefaultStream(&stream, 0, 1, paInt16, AUDIOFREQ, 1024, NULL, NULL);
+	Pa_OpenDefaultStream(&stream, 0, 1, AUDIOFORMAT, AUDIOFREQ, 1024, NULL, NULL);
 	Pa_StartStream(stream);
 
 	do {
-		MTPlayer_Play(buf, 1024, AUDIOFREQ);
+#ifdef USEFLOAT
+		MTPlayer_PlayFloat(buf, 1024, AUDIOFREQ);
+#else
+		MTPlayer_PlayInt16(buf, 1024, AUDIOFREQ);
+#endif
+
 		Pa_WriteStream(stream, buf, 1024);
 	} while (1);
 	
