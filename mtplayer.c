@@ -67,6 +67,10 @@ int MTPlayer_Init(uint8_t *filedata) {
 	return 1;
 }
 
+void MTPlayer_GetStatus(songstatus_t *status) {
+	memcpy(status, &s, sizeof(s));
+}
+
 void _MTPlayer_ProcessTick() {
 	int i, ch;
 
