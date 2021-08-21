@@ -20,6 +20,8 @@ int MTPlayer_Init(uint8_t *filedata) {
 		return 0;
 	}
 
+	memset(&s, 0, sizeof(songstatus_t));
+
 	s.patterns = filedata[0x5C];
 	s.channels = filedata[0x5D];
 
@@ -78,17 +80,30 @@ void _MTPlayer_ProcessTick() {
 	if(!--s.tempotick) {
 		// Process a new row
 
-		s.rowdata += s.channels;
-
 		if(++s.row >= 0x40) {
 			// Process the next order
 
-			if(++s.order >= s.orders) s.order = 0;
-
-			s.rowdata = s.data + s.ordertable[s.order] * 64 * s.channels;
-
+			s.order++;
 			s.row = 0;
 		}
+
+		for(ch = 0; ch < s.channels; ch++) {
+			switch(s.channel[ch].effect) {
+				case 5:
+					s.order = s.channel[ch].parm1;
+					s.row = 0;
+					break;
+
+				case 6:
+					s.order++;
+					s.row = s.channel[ch].parm1;
+					break;
+			}
+		}
+
+		if(s.order >= s.orders) s.order = 0;
+
+		s.rowdata = s.data + (s.ordertable[s.order] * 64 + s.row) * s.channels;
 
 		for(ch = 0; ch < s.channels; ch++) {
 			s.channel[ch].note = s.rowdata[ch] >> 9;
@@ -127,24 +142,6 @@ void _MTPlayer_ProcessTick() {
 					if(s.channel[ch].parm2) s.channel[ch].vibdepth = s.channel[ch].parm2;
 					s.channel[ch].vibindex += s.channel[ch].vibspeed;
 					s.channel[ch].vibindex %= vibtablesize;
-					break;
-
-				case 5:
-					s.order = s.channel[ch].parm1 - 1;
-					s.row = 0x3F;
-					break;
-
-				case 6:
-					if(s.channel[ch].parm1 && s.channel[ch].parm1 < 0x40) {
-						s.row = s.channel[ch].parm1 - 1;
-						s.order++;
-
-						if(++s.order >= s.orders) s.order = 0;
-
-						s.rowdata = s.data + (s.ordertable[s.order] * 64 + s.row) * s.channels;
-					} else {
-						s.row = 0x3F;
-					}
 					break;
 
 				case 7:
