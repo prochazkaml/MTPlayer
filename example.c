@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 
 	PaStream *stream;
 	audio_t buf[1024];
-	songstatus_t status;
+	songstatus_t *status = MTPlayer_GetStatus();
 	int samples;
 
 	Pa_Initialize();
@@ -57,14 +57,12 @@ int main(int argc, char *argv[]) {
 
 		Pa_WriteStream(stream, buf, 1024);
 
-		MTPlayer_GetStatus(&status);
-
 		printf("Playing %ds - row: %02X, order: %02d/%02d",
-			samples / AUDIOFREQ, status.row, status.order, status.orders);
+			samples / AUDIOFREQ, status->row, status->order, status->orders);
 
-		for(int ch = 0; ch < status.channels; ch++) {
-			if(status.channel[ch].active)
-				printf(" %d", status.channel[ch].freq);
+		for(int ch = 0; ch < status->channels; ch++) {
+			if(status->channel[ch].active)
+				printf(" %d", status->channel[ch].freq);
 			else
 				printf(" -");
 		}
