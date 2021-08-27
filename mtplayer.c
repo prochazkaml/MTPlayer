@@ -13,6 +13,8 @@ songstatus_t s;
 short notesHz[maxnote * IBN];
 short VibTable[vibtablesize];
 
+int samplesplayed;
+
 int MTPlayer_Init(uint8_t *filedata) {
 	int i, ch;
 	
@@ -66,6 +68,8 @@ int MTPlayer_Init(uint8_t *filedata) {
 	s.order = -1;
 	s.tempotick = 1;
 	s.audiotick = 1;
+
+	samplesplayed = 0;
 
 	return 1;
 }
@@ -214,7 +218,7 @@ void _MTPlayer_ProcessTick() {
 	}
 }
 
-void MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq) {
+int MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq) {
 	int i, ch;
 
 	s.audiospeed = audiofreq / 60;
@@ -242,9 +246,11 @@ void MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq) {
 			}
 		}
 	}
+
+	return samplesplayed += bufsize;
 }
 
-void MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq) {
+int MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq) {
 	int i, ch;
 
 	s.audiospeed = audiofreq / 60;
@@ -272,5 +278,7 @@ void MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq) {
 			}
 		}
 	}
+
+	return samplesplayed += bufsize;
 }
 
