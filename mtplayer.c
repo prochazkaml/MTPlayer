@@ -52,6 +52,7 @@ int MTPlayer_Init(uint8_t *filedata) {
 	}
 
 	s.tempo = (s.channels > 4) ? s.channels : 4;
+	s.audiospeed = 60;
 
 	for(ch = 0; ch < maxchannels; ch++) {
 		s.channel[ch].enabled = 1;
@@ -149,7 +150,12 @@ void _MTPlayer_ProcessTick() {
 					break;
 
 				case 7:
-					s.tempo = s.channel[ch].parm1;
+					if(s.channel[ch].parm1 > 0x20) {
+						s.audiospeed = s.channel[ch].parm1;
+					} else {
+						s.tempo = s.channel[ch].parm1;
+					}
+
 					break;
 			}
 		}
@@ -221,17 +227,15 @@ void _MTPlayer_ProcessTick() {
 int MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq) {
 	int i, ch;
 
-	s.audiospeed = audiofreq / 60;
-
 	memset(buf, 0, bufsize * sizeof(short));
 
 	for(i = 0; i < bufsize; i++) {
 		// Process tick if necessary
 
 		if(!--s.audiotick) {
-			s.audiotick = s.audiospeed;
-
 			_MTPlayer_ProcessTick();
+
+			s.audiotick = audiofreq / s.audiospeed;
 		}
 
 		// Render the sound
@@ -253,17 +257,15 @@ int MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq) {
 int MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq) {
 	int i, ch;
 
-	s.audiospeed = audiofreq / 60;
-
 	memset(buf, 0, bufsize * sizeof(float));
 
 	for(i = 0; i < bufsize; i++) {
 		// Process tick if necessary
 
 		if(!--s.audiotick) {
-			s.audiotick = s.audiospeed;
-
 			_MTPlayer_ProcessTick();
+
+			s.audiotick = audiofreq / s.audiospeed;
 		}
 
 		// Render the sound
