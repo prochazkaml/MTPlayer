@@ -22,5 +22,6 @@ typedef struct {
 
 int MTPlayer_Init(uint8_t *filedata);
 songstatus_t *MTPlayer_GetStatus();
+void MTPlayer_ProcessTick();
 int MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq);
 int MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq);

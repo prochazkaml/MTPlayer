@@ -79,7 +79,7 @@ songstatus_t *MTPlayer_GetStatus() {
 	return &s;
 }
 
-void _MTPlayer_ProcessTick() {
+void MTPlayer_ProcessTick() {
 	int i, ch;
 
 	if(!--s.tempotick) {
@@ -233,7 +233,7 @@ int MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq) {
 		// Process tick if necessary
 
 		if(!--s.audiotick) {
-			_MTPlayer_ProcessTick();
+			MTPlayer_ProcessTick();
 
 			s.audiotick = audiofreq / s.audiospeed;
 		}
@@ -263,7 +263,7 @@ int MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq) {
 		// Process tick if necessary
 
 		if(!--s.audiotick) {
-			_MTPlayer_ProcessTick();
+			MTPlayer_ProcessTick();
 
 			s.audiotick = audiofreq / s.audiospeed;
 		}
