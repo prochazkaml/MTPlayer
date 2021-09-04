@@ -284,3 +284,37 @@ int MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq) {
 	return samplesplayed += bufsize;
 }
 
+int notectr = 0;
+
+void MTPlayer_PlayNoteInt16(uint8_t note, int16_t *buf, int bufsize, int audiofreq) {
+	int i;
+
+	memset(buf, 0, bufsize * sizeof(int16_t));
+
+	for(i = 0; i < bufsize; i++) {
+		// Render the sound
+
+		notectr += notesHz[note * IBN];
+
+		if((notectr / (audiofreq / 2)) & 1) {
+			buf[i] += 32767 / s.channels;
+		}
+	}
+}
+
+void MTPlayer_PlayNoteFloat(uint8_t note, float *buf, int bufsize, int audiofreq) {
+	int i;
+
+	memset(buf, 0, bufsize * sizeof(float));
+
+	for(i = 0; i < bufsize; i++) {
+		// Render the sound
+
+		notectr += notesHz[note * IBN];
+
+		if((notectr / (audiofreq / 2)) & 1) {
+			buf[i] += 1.0 / ((float)s.channels);
+		}
+	}
+
+}

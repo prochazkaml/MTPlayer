@@ -25,3 +25,6 @@ songstatus_t *MTPlayer_GetStatus();
 void MTPlayer_ProcessTick();
 int MTPlayer_PlayInt16(int16_t *buf, int bufsize, int audiofreq);
 int MTPlayer_PlayFloat(float *buf, int bufsize, int audiofreq);
+
+void MTPlayer_PlayNoteInt16(uint8_t note, int16_t *buf, int bufsize, int audiofreq);
+void MTPlayer_PlayNoteFloat(uint8_t note, float *buf, int bufsize, int audiofreq);
